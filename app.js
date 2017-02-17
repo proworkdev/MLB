@@ -1,44 +1,42 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
+var express  = require('express');
+var app      = express();
+var port     = process.env.PORT || 8080;
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash    = require('connect-flash');
+
+var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var bodyParser   = require('body-parser');
+var session      = require('express-session');
+var expressLayouts = require('express-ejs-layouts');
+var admin_routes = require('./routes/admin-routes');
 
-var routes = require('./routes/routes');
+var configDB = require('./config/database.js');
 
-var app = express();
+// configuration ===============================================================
+mongoose.connect(configDB.url); // connect to database
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+require('./config/passport')(passport); // pass passport for configuration
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// set up our express application
+app.use(expressLayouts);
+app.use(morgan('dev')); 
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser()); 
 
-app.use('/', routes);
+app.set('view engine', 'ejs'); // template engine
+app.set('views', [__dirname + '/views/admin',__dirname + '/views',__dirname + '/views/admin/adminpages']); //admin
+// required for passport
+app.use(session({ secret: 'mlb' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); 
+app.use(flash());
+app.use(express.static('public'))
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
-});
+require('./routes/routes.js')(app, passport);  // Simple Routes
+require('./routes/admin-routes.js')(app, passport); // Admin Routes
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-module.exports = app;
+app.listen(port);
+console.log('Site running on : ' + port);
