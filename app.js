@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var passport = require('passport');
 var flash    = require('connect-flash');
-
+var jwt         = require('jwt-simple');
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
@@ -19,13 +19,14 @@ var configDB = require('./config/database.js');
 mongoose.connect(configDB.url); // connect to database
 
 require('./config/passport')(passport); // pass passport for configuration
+require('./config/passport-api')(passport);
 
 // set up our express application
 app.use(expressLayouts);
 app.use(morgan('dev')); 
 app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser()); 
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.set('view engine', 'ejs'); // template engine
 app.set('views', [__dirname + '/views/admin',__dirname + '/views',__dirname + '/views/admin/adminpages']); //admin
 // required for passport
@@ -38,6 +39,9 @@ app.use(express.static('public'))
 require('./routes/routes.js')(app, passport);  // Simple Routes
 require('./routes/admin-routes.js')(app, passport); // Admin Routes
 
+
+// connect the api routes under /api/*
+app.use('/api', require('./routes/api-routes.js'));
 
 app.listen(port);
 console.log('Site running on : ' + port);
