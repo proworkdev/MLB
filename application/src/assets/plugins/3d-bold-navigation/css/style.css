@@ -126,7 +126,7 @@ xnavigation
 }
 
 .cd-nav {
-  background-color: #F9F9F9;
+  background-color: #F1F4F9;
   margin: 0;
 }
 .cd-nav::after {
@@ -165,7 +165,7 @@ xnavigation
 }
 .no-touch .cd-nav li a:hover,
 .cd-nav li.cd-selected a {
-  background: #F5F5F5;
+  background: #E9EDF2;
 }
 
 .cd-nav span, .cd-nav p {

@@ -233,8 +233,11 @@ $( document ).ready(function() {
     // Layout Settings
     var fixedHeaderCheck = document.querySelector('.fixed-header-check'),
         fixedSidebarCheck = document.querySelector('.fixed-sidebar-check'),
+        horizontalBarCheck = document.querySelector('.horizontal-bar-check'),
         toggleSidebarCheck = document.querySelector('.toggle-sidebar-check'),
+        boxedLayoutCheck = document.querySelector('.boxed-layout-check'),
         compactMenuCheck = document.querySelector('.compact-menu-check'),
+        hoverMenuCheck = document.querySelector('.hover-menu-check'),
         defaultOptions = function() {
             
             if(($('body').hasClass('small-sidebar'))&&(toggleSidebarCheck.checked == 1)){
@@ -249,11 +252,23 @@ $( document ).ready(function() {
                 fixedSidebarCheck.click();
             }
         
-            if(!($('body').hasClass('compact-menu'))&&(compactMenuCheck.checked == 0)){
+            if(($('body').hasClass('page-horizontal-bar'))&&(horizontalBarCheck.checked == 1)){
+                horizontalBarCheck.click();
+            }
+        
+            if(($('body').hasClass('compact-menu'))&&(compactMenuCheck.checked == 1)){
                 compactMenuCheck.click();
             }
         
-            $(".theme-color").attr("href", 'assets/css/themes/white.css');
+            if(($('body').hasClass('hover-menu'))&&(hoverMenuCheck.checked == 1)){
+                hoverMenuCheck.click();
+            }
+        
+            if(($('.page-content').hasClass('container'))&&(boxedLayoutCheck.checked == 1)){
+                boxedLayoutCheck.click();
+            }
+        
+            $(".theme-color").attr("href", 'assets/css/themes/green.css');
            
             sidebarAndContentHeight();
         },
@@ -290,12 +305,32 @@ $( document ).ready(function() {
             $('.page-sidebar-inner').slimScroll();
             sidebarAndContentHeight();
         },
+        horizontalBar = function() {
+            $('.sidebar').toggleClass('horizontal-bar');
+            $('.sidebar').toggleClass('page-sidebar');
+            $('body').toggleClass('page-horizontal-bar');
+            if(($('body').hasClass('page-sidebar-fixed'))&&(!$('body').hasClass('page-header-fixed'))){
+                fixedHeaderCheck.click();
+                alert("Static header isn't compatible with fixed horizontal nav mode. Modern will set static mode on horizontal nav.");
+            };
+            sidebarAndContentHeight();
+        },
+        boxedLayout = function() {
+            $('.page-content').toggleClass('container');
+            sidebarAndContentHeight();
+        },
         compactMenu = function() {
             $('body').toggleClass('compact-menu');
             sidebarAndContentHeight();
+        },
+        hoverMenu = function() {
+            if((!$('body').hasClass('hover-menu'))&&($('body').hasClass('page-sidebar-fixed'))){
+                fixedSidebarCheck.click();
+                alert("Fixed sidebar isn't compatible with hover menu mode. Modern will set static mode on sidebar.");
+            };
+            $('body').toggleClass('hover-menu');
+            sidebarAndContentHeight();
         };
-    
-    $('.page-sidebar-fixed .page-sidebar-inner').slimScroll();
     
     
     // Logo text on Collapsed Sidebar
@@ -317,12 +352,24 @@ $( document ).ready(function() {
         fixedSidebar();
     };
     
+    horizontalBarCheck.onchange = function() {
+        horizontalBar();
+    };
+    
     toggleSidebarCheck.onchange = function() {
         collapseSidebar();
     };
         
     compactMenuCheck.onchange = function() {
         compactMenu();
+    };
+        
+    hoverMenuCheck.onchange = function() {
+        hoverMenu();
+    };
+        
+    boxedLayoutCheck.onchange = function() {
+        boxedLayout();
     };
     
     
@@ -361,6 +408,17 @@ $( document ).ready(function() {
         $('.fixed-header-check').prop('checked', true);
     }
     
+    // horizontal bar Bug
+    if(!($('body').hasClass('page-horizontal-bar'))&&(horizontalBarCheck.checked == 1)){
+        $('body').addClass('page-horizontal-bar');
+        $('.sidebar').addClass('horizontal-bar');
+        $('.sidebar').removeClass('page-sidebar');
+    }
+    
+    if(($('body').hasClass('page-horizontal-bar'))&&(horizontalBarCheck.checked == 0)){
+        $('.horizontal-bar-check').prop('checked', true);
+    }
+    
     // Toggle Sidebar Bug
     if(!($('body').hasClass('small-sidebar'))&&(toggleSidebarCheck.checked == 1)){
         $('body').addClass('small-sidebar');
@@ -369,9 +427,37 @@ $( document ).ready(function() {
     if(($('body').hasClass('small-sidebar'))&&(toggleSidebarCheck.checked == 0)){
         $('.horizontal-bar-check').prop('checked', true);
     }
+    
+    // Boxed Layout Bug
+    if(!($('.page-content').hasClass('container'))&&(boxedLayoutCheck.checked == 1)){
+        $('.toggle-sidebar-check').addClass('container');
+    }
+    
+    if(($('.page-content').hasClass('container'))&&(boxedLayoutCheck.checked == 0)){
+        $('.boxed-layout-check').prop('checked', true);
+    }
+        
+    // Boxed Layout Bug
+    if(!($('.page-content').hasClass('container'))&&(boxedLayoutCheck.checked == 1)){
+        $('.toggle-sidebar-check').addClass('container');
+    }
+    
+    if(($('.page-content').hasClass('container'))&&(boxedLayoutCheck.checked == 0)){
+        $('.boxed-layout-check').prop('checked', true);
+    }
+        
+    // Boxed Layout Bug
+    if(!($('.page-content').hasClass('container'))&&(boxedLayoutCheck.checked == 1)){
+        $('.toggle-sidebar-check').addClass('container');
+    }
+    
+    if(($('.page-content').hasClass('container'))&&(boxedLayoutCheck.checked == 0)){
+        $('.boxed-layout-check').prop('checked', true);
+    }
     }
     
     
+    // Chat Sidebar
     // Chat Sidebar
     if($('.chat').length) {
         var menuRight = document.getElementById( 'cbp-spmenu-s1' ),

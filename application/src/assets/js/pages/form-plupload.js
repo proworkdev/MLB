@@ -30,9 +30,9 @@ $(document).ready(function() {
  
  
         // Flash settings
-        flash_swf_url : '/admin2/assets/plugins/plupload/js/Moxie.swf',
+        flash_swf_url : '/admin1/assets/plugins/plupload/js/Moxie.swf',
      
         // Silverlight settings
-        silverlight_xap_url : '/admin2/assets/plugins/plupload/js/Moxie.xap'
+        silverlight_xap_url : '/admin1/assets/plugins/plupload/js/Moxie.xap'
     });
 });

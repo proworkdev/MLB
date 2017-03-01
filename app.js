@@ -10,6 +10,7 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
+var cors = require('cors')
 var expressLayouts = require('express-ejs-layouts');
 var admin_routes = require('./routes/admin-routes');
 
@@ -35,7 +36,7 @@ app.use(passport.initialize());
 app.use(passport.session()); 
 app.use(flash());
 app.use(express.static('public'))
-
+app.use(cors())
 require('./routes/routes.js')(app, passport);  // Simple Routes
 require('./routes/admin-routes.js')(app, passport); // Admin Routes
 
