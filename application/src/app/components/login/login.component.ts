@@ -23,9 +23,25 @@ export class LoginComponent implements OnInit {
 	onSignIn(form: NgForm){
 		this.authService.login(form).
 		subscribe(
-			decodedToken =>  this.router.navigate(['/dashboard']),
+			success =>  this.router.navigate(['/dashboard']),
 			error => console.log(error)
 			);
+	}
+
+}
+
+@Component({
+	selector: 'app-logout',
+	templateUrl: './login.component.html'
+})
+export class LogoutComponent implements OnInit {
+	constructor(private authService : AuthService,private router : Router) { 
+	}
+
+	ngOnInit() {
+		this.authService.logout();
+		this.router.navigate(['/mlbadmin']);
+
 	}
 
 }

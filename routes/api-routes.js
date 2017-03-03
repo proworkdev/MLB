@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var Teams = require('../models/teams');
+var Players = require('../models/players');
 var jwt         = require('jwt-simple');
 var config = require('../config/database.js');
 var passport = require('passport');
@@ -24,7 +26,8 @@ router.post('/signup', function(req, res) {
 
 router.post('/authenticate', function(req, res) {
   User.findOne({
-    'local.email': req.body.email
+    'local.email': req.body.email,
+    'local.role': 'admin'
   }, function(err, user) {
     if (err) throw err;
 
@@ -37,7 +40,7 @@ router.post('/authenticate', function(req, res) {
           // if user is found and password is right create a token
           var token = jwt.encode(user, config.secret);
           // return the information including token as JSON
-          res.json({success: true, token: token,'user':user});
+          res.json({success: true, token: 'JWT '+token,user:user});
         } else {
           res.send({success: false, msg: 'Authentication failed. Wrong password.'});
         }
@@ -59,6 +62,53 @@ router.get('/memberinfo', passport.authenticate('jwt', { session: false}), funct
         return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
       } else {
         res.json({success: true, msg: 'Welcome in the member area ' + user.local.email + '!'});
+      }
+    });
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+
+router.get('/mlbTeams', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var decoded = jwt.decode(token, config.secret);
+    User.findOne({
+      name: decoded.name
+    }, function(err, user) {
+      if (err) throw err;
+
+      if (!user) {
+        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+      } else {
+        Teams.find({}, function (err, users) {
+          res.send(users);
+        });
+      }
+    });
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+
+router.get('/mlbPlayers', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var decoded = jwt.decode(token, config.secret);
+    User.findOne({
+      name: decoded.name
+    }, function(err, user) {
+      if (err) throw err;
+
+      if (!user) {
+        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+      } else {
+       /* Players.find({}, function (err, players) {
+          res.send(players);
+        });*/
+        Teams.find({}, function (err, players) {
+          res.send(players);
+        });
       }
     });
   } else {

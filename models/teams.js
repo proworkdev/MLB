@@ -5,7 +5,8 @@ TeamsSchema.add({
 	name: 'string', 
 	abbr: 'string',
 	market: 'string',
-	team_id: 'string'	
+	team_id: 'string',
+	players: []	
 });
 
 module.exports = mongoose.model('Teams', TeamsSchema);

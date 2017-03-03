@@ -21,33 +21,36 @@ module.exports = function(app, passport) {
     });
   });
 
-    app.get('/mlbData', isLoggedIn, function(req, res) {
+    app.get('/mlbData', function(req, res) {
         request('http://localhost:8080/data/mlbdata.json', function (error, response, mlbData) {
+            console.log('a');
             if (!error && response.statusCode == 200) {
+                //res.send(JSON.parse(mlbData));
                 var playerData = JSON.parse(mlbData);
                 for(var team in playerData.teams){
                     name = playerData.teams[team].name;
                     abbr = playerData.teams[team].abbr;
                     market = playerData.teams[team].market;
                     team_id = playerData.teams[team].id;
-                    players = playerData.teams[team].players;
-                    var teamDatabaseId;
-                    console.log(team_id);
-                   /* Team.findOne({team_id : team_id},function(err,teamdata){
-                        console.log(team_id);
-                if(teamdata == null){ // Check if alerady team inserted
-                    var newTeam = new Team();
-                    newTeam.name = name;
-                    newTeam.abbr = abbr;
-                    newTeam.market = market;
-                    newTeam.team_id = team_id;
-                    newTeam.save();
+                   // players = playerData.teams[team].players;
+                   players = playerData.teams[team].players;
+                   var teamDatabaseId;
+                 //  Team.findOne({team_id : team_id},function(err,teamdata){
+
+               // if(teamdata == null){ // Check if alerady team inserted
+                var newTeam = new Team();
+                newTeam.name = name;
+                newTeam.abbr = abbr;
+                newTeam.market = market;
+                newTeam.team_id = team_id;
+                newTeam.players = players;
+                newTeam.save();
                     teamDatabaseId = newTeam._id;  // Team Inserted Id
-                }else{
+              /*  }else{
                     teamDatabaseId = teamdata._id; // Team Id from Database
-                }
-            });*/
-            var newTeam = new Team();
+                }*/
+          //  });
+         /*   var newTeam = new Team();
             newTeam.name = name;
             newTeam.abbr = abbr;
             newTeam.market = market;
@@ -80,7 +83,7 @@ module.exports = function(app, passport) {
                     if (err)
                         throw err;
                 });
-            }
+            }*/
 
 
 
@@ -99,8 +102,8 @@ function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated()){
         if(req.user.local.role == 'admin'){
-           return next(); 
-       }else{
+         return next(); 
+     }else{
         res.send('Un User');
     }
     

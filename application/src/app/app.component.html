@@ -1,4 +1,9 @@
-<router-outlet></router-outlet>
-<nav>
-	<a routerLink="/mlbadmin">Admin Login</a>
-</nav>
+<simple-notifications></simple-notifications>
+<div class="overlay"></div>
+<main class="page-content content-wrap">
+	<topbar *ngIf="admin"></topbar>
+	<left-sidebar *ngIf="admin"></left-sidebar>
+	<div class="page-inner">
+		<router-outlet></router-outlet>
+	</div>
+</main>

@@ -1,0 +1,14 @@
+<div class="page-title">
+	<h3>MLB Teams</h3>
+</div>
+<div id="main-wrapper">
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<div>
+				<p-dataTable [value]="mlbTeams" [rows]="10" [paginator]="true">
+					<p-column [styleClass] = "ui-datatable" *ngFor="let col of cols" [field]="col.field" [header]="col.header" [filter]="true"></p-column>
+				</p-dataTable>
+			</div>
+		</div>
+	</div>
+</div>
