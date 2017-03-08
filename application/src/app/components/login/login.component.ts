@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
 	onSignIn(form: NgForm){
 		this.authService.login(form).
 		subscribe(
-			success =>  this.router.navigate(['/dashboard']),
+			success =>  this.router.navigate(['/admin/dashboard']),
 			error => console.log(error)
 			);
 	}
@@ -40,7 +40,7 @@ export class LogoutComponent implements OnInit {
 
 	ngOnInit() {
 		this.authService.logout();
-		this.router.navigate(['/mlbadmin']);
+		this.router.navigate(['/admin']);
 
 	}
 

@@ -8,12 +8,21 @@ var config = require('../config/database.js');
 var passport = require('passport');
 
 router.post('/signup', function(req, res) {
-  if (!req.body.email || !req.body.password) {
-    res.json({success: false, msg: 'Please pass name and password.'});
+
+ User.findOne({
+  'local.email': req.body.email
+}, function(err, user) {
+  if (err) throw err;
+
+  if (user) {
+    res.send({success: false, msg: 'Email Already Exist'});
   } else {
-    var newUser            = new User();
-    newUser.local.email    = req.body.email;
-    newUser.local.password = req.body.password;
+   var newUser            = new User();
+   newUser.local.email    = req.body.email;
+   newUser.local.password = req.body.password;
+   newUser.local.first_name = req.body.first_name;
+   newUser.local.last_name = req.body.last_name;
+   newUser.local.role = 'user';
     // save the user
     newUser.save(function(err) {
       if (err) {
@@ -22,6 +31,8 @@ router.post('/signup', function(req, res) {
       res.json({success: true, msg: 'Successful created new user.'});
     });
   }
+});
+
 });
 
 router.post('/authenticate', function(req, res) {
@@ -103,9 +114,7 @@ router.get('/mlbPlayers', passport.authenticate('jwt', { session: false}), funct
       if (!user) {
         return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
       } else {
-       /* Players.find({}, function (err, players) {
-          res.send(players);
-        });*/
+
         Teams.find({}, function (err, players) {
           res.send(players);
         });
@@ -114,6 +123,82 @@ router.get('/mlbPlayers', passport.authenticate('jwt', { session: false}), funct
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }
+});
+
+router.get('/getMembers', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var decoded = jwt.decode(token, config.secret);
+    User.findOne({
+      name: decoded.name
+    }, function(err, user) {
+      if (err) throw err;
+
+      if (!user) {
+        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+      } else {
+        User.find({'local.role': {'$ne':'admin' }},function (err, users) {
+          res.send(users);
+        });
+      }
+    });
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+
+router.post('/deleteMember', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var checkUser = checkAuthenticate(token);
+    if(checkUser){
+      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+    }else{
+
+      User.findByIdAndRemove(req.body.id, function (err, user) {  
+        var response = {
+          success : true,
+          message: "Todo successfully deleted",
+          id: user._id
+        };
+        res.send(response);
+      });
+    }
+    
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+
+router.post('/editMember', passport.authenticate('jwt', { session: false}), function(req, res) {
+  res.send('a');
+/*  var token = getToken(req.headers);
+  if (token) {
+    var checkUser = checkAuthenticate(token);
+    if(checkUser){
+      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+    }else{
+      res.send(req.body.id)
+      User.findById(req.body.id, function (err, user) {  
+        if (err) {
+          res.status(500).send(err);
+        } else 
+          user.first_name = req.body.first_name 
+          user.last_name = req.body.last_name
+          user.email = req.body.email
+          user.save(function (err, user) {
+            if (err) {
+              res.status(500).send(err)
+            }
+            res.send(user);
+          });
+        }
+      });
+    }
+    
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }*/
 });
 
 getToken = function (headers) {
@@ -128,5 +213,21 @@ getToken = function (headers) {
     return null;
   }
 };
+
+checkAuthenticate = function(token){
+  var decoded = jwt.decode(token, config.secret);
+  User.findOne({
+    name: decoded.name
+  }, function(err, user) {
+    if (err) throw err;
+
+    if (!user) {
+      return false;
+    } else {
+     return true;
+
+   }
+ });
+}
 
 module.exports = router;

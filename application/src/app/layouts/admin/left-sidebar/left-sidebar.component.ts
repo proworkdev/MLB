@@ -27,3 +27,17 @@ export class Topbar implements OnInit {
 	}
 
 }
+
+@Component({
+	moduleId: module.id,
+	selector: 'admin-head',
+	templateUrl: './admin-head.html'
+})
+export class AdminHead implements OnInit {
+
+	constructor() { }
+
+	ngOnInit() {
+	}
+
+}

@@ -4,19 +4,30 @@ import {Observable} from 'rxjs';
 import 'rxjs/Rx';
 import { tokenNotExpired } from 'angular2-jwt';
 import {NotificationsService} from 'angular2-notifications';
+import { Router } from '@angular/router';
 
 interface Credentials {
   email: string,
   password: string
 }
 
+interface member {
+  email: string,
+  first_name: string,
+  last_name: string,
+  password: string
+}
+
+
 @Injectable()
 export class AuthService {
 
-  constructor(private http:Http,private _notificationsService: NotificationsService) {}
+  url = 'http://localhost:8080/api/';
+
+  constructor(private http:Http,private _notificationsService: NotificationsService,private router : Router) {}
 
   login(Credentials){
-    return this.http.post('http://localhost:8080/api/authenticate',
+    return this.http.post(this.url+'authenticate',
       {email:Credentials.value.email,password:Credentials.value.password},
       {headers:new Headers({'X-Requested-with':'XMLHttpRequest'})})
     .map(
@@ -96,5 +107,59 @@ export class AuthService {
         (response : Response) => {
           return response.json();
         });
+    }
+
+    getMembers(){
+      return this.http.get('http://localhost:8080/api/getMembers',{headers:new Headers({'Authorization':localStorage.getItem('token')})}).map(
+        (response : Response) => {
+          return response.json();
+        });
+    }
+
+    saveMember(member){
+      return this.http.post(this.url+'signup',member,{headers:new Headers({'X-Requested-with':'XMLHttpRequest'})}).map(
+        (response : Response) =>{
+          if(response.json().success == false){
+            this._notificationsService.error(
+              'Error',
+              response.json().msg,
+              {
+                timeOut: 5000,
+                showProgressBar: true,
+                pauseOnHover: false,
+                clickToClose: false
+              }
+              )
+          }else{
+            this._notificationsService.success(
+              'Success',
+              response.json().msg,
+              {
+                timeOut: 5000,
+                showProgressBar: true,
+                pauseOnHover: false,
+                clickToClose: false
+              }
+              )
+            this.router.navigate(['/admin/members']);
+          }
+        }
+        );
+    }
+
+    deleteMember(id){
+      return this.http.post(this.url+'deleteMember',{id:id},{headers:new Headers({'Authorization':localStorage.getItem('token')})}).map(
+        (response : Response) =>{
+          console.log(response);
+        }
+        )
+    }
+
+    editMember(member){
+      return this.http.post(this.url+'editMember',member,{headers:new Headers({'Authorization':localStorage.getItem('token')})}).map(
+        (response : Response)=>{
+          console.log(response);
+        }
+        )
     }
   }

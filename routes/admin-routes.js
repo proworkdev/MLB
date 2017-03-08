@@ -102,8 +102,8 @@ function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated()){
         if(req.user.local.role == 'admin'){
-         return next(); 
-     }else{
+           return next(); 
+       }else{
         res.send('Un User');
     }
     

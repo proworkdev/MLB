@@ -5,9 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule , Routes} from '@angular/router';
 import {SimpleNotificationsModule} from 'angular2-notifications';
-import {DataTableModule,SharedModule} from 'primeng/primeng';
+import {DataTableModule,SharedModule ,DialogModule} from 'primeng/primeng';
+
 //Routes
-import { AdminRoutes } from './routes/admin.routes';
+import { AppRoutes } from './routes/app.routes';
+
 //Components
 import { TestComponent } from './components/login.component';
 import { LoginComponent } from './components/login/login.component';
@@ -15,15 +17,22 @@ import { LogoutComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MlbComponent } from './components/admin/mlb/mlb.component';
 import { MlbPlayerComponent } from './components/admin/mlb/mlb.component';
+import { MembersComponent } from './components/admin/members/members.component';
+import { AddMemberComponent } from './components/admin/members/members.component';
 
 //Services
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 
 
-// Layouts
+// Admin Layouts
 import { LeftSidebar} from './layouts/admin/left-sidebar/left-sidebar.component';
 import { Topbar} from './layouts/admin/left-sidebar/left-sidebar.component';
+import { AdminHead } from './layouts/admin/left-sidebar/left-sidebar.component';
+
+
+//FrontEnd Components
+import { FrontComponent } from './components/front/front.component';
 
 @NgModule({
   declarations: [
@@ -32,20 +41,28 @@ import { Topbar} from './layouts/admin/left-sidebar/left-sidebar.component';
   DashboardComponent,
   LeftSidebar,
   Topbar,
+  AdminHead,
   LogoutComponent,
   MlbComponent,
-  MlbPlayerComponent
+  MlbPlayerComponent,
+  FrontComponent,
+  MembersComponent,
+  AddMemberComponent
   ],
   imports: [
   BrowserModule,
   FormsModule,
   HttpModule,
-  RouterModule.forRoot(AdminRoutes),
+  RouterModule.forRoot(AppRoutes),
   SimpleNotificationsModule.forRoot(),
   DataTableModule,
-  SharedModule
+  SharedModule,
+  DialogModule
   ],
   providers: [AuthService,AuthGuard],
   bootstrap: [TestComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(){
+
+  }}

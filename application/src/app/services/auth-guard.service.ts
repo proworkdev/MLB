@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
 		if(this.auth.loggedIn()) {
 			return true;
 		} else {
-			this.router.navigateByUrl('/mlbadmin');
+			this.router.navigateByUrl('/admin');
 			return false;
 		}
 	}

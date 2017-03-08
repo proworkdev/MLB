@@ -13,11 +13,15 @@
 			</div>
 		</div>
 		<ul class="menu accordion-menu">
-			<li class="active"><a [routerLink]="['/dashboard']" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
-			<li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>MLB</p><span class="arrow"></span></a>
+			<li [routerLinkActive]="['active']" [routerLink]="['/admin/dashboard']"><a class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
+			<li [routerLinkActive]="['active']" class="droplink"><a [routerLink]="['/admin/mlb']" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>MLB</p><span class="arrow"></span></a>
 				<ul class="sub-menu">
-					<li><a [routerLink]="['/mlb']">Teams</a></li>
-					<li><a [routerLink]="['/mlbplayers']">Players</a></li>
+					<li [routerLinkActive]="['active']" [routerLink]="['/admin/mlbplayers']"><a>Players</a></li>
+				</ul>
+			</li>
+			<li [routerLinkActive]="['active']" class="droplink"><a [routerLink]="['/admin/members']" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Members</p><span class="arrow"></span></a>
+				<ul class="sub-menu">
+					<li [routerLinkActive]="['active']" [routerLink]="['/admin/addmember']"><a>Add Member</a></li>
 				</ul>
 			</li>
 		</ul>
