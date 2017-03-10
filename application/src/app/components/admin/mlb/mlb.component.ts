@@ -5,7 +5,6 @@ import { AuthService } from '../../../services/auth.service';
 @Component({
 	selector: 'app-mlb',
 	templateUrl: './mlb.component.html',
-	styleUrls: ['../../../../../node_modules/primeng/resources/themes/omega/theme.css','../../../../../node_modules/primeng/resources/primeng.min.css','../../../../../node_modules/primeng/components/datatable/datatable.css'],
 	encapsulation: ViewEncapsulation.None
 })
 export class MlbComponent implements OnInit {
@@ -31,7 +30,6 @@ export class MlbComponent implements OnInit {
 @Component({
 	selector: 'app-mlb-player',
 	templateUrl: './players.component.html',
-	styleUrls: ['../../../../../node_modules/primeng/resources/themes/omega/theme.css','../../../../../node_modules/primeng/resources/primeng.min.css','../../../../../node_modules/primeng/components/datatable/datatable.css'],
 	encapsulation: ViewEncapsulation.None
 })
 export class MlbPlayerComponent implements OnInit {

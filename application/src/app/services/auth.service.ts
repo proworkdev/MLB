@@ -6,6 +6,10 @@ import { tokenNotExpired } from 'angular2-jwt';
 import {NotificationsService} from 'angular2-notifications';
 import { Router } from '@angular/router';
 
+// Interaces
+import {Pages} from '../forms/pages'
+import {EditPage} from '../forms/pages'
+
 interface Credentials {
   email: string,
   password: string
@@ -159,6 +163,34 @@ export class AuthService {
       return this.http.post(this.url+'editMember',member,{headers:new Headers({'Authorization':localStorage.getItem('token')})}).map(
         (response : Response)=>{
           console.log(response);
+        }
+        )
+    }
+
+    addPage(Pages){
+      return this.http.post(this.url+'addPage',Pages,{headers:new Headers({'Authorization':localStorage.getItem('token')})}).map(
+        (response : Response)=>{
+          this.router.navigate(['/admin/pages']);
+        }
+        )
+    }
+
+    getPages(){
+      return this.http.get(this.url+'getPages',{headers: new Headers({'Authorization':localStorage.getItem('token')})}).map(
+        (response : Response)=>{return response.json();}
+        )
+    }
+
+    getPage(id){
+      return this.http.get(this.url+'getPage/'+id,{headers: new Headers({'Authorization':localStorage.getItem('token')})}).map(
+        (response : Response)=>{return response.json();}
+        )
+    }
+
+    editPage(EditPage){
+      return this.http.post(this.url+'addPage',EditPage,{headers:new Headers({'Authorization':localStorage.getItem('token')})}).map(
+        (response : Response)=>{
+          this.router.navigate(['/admin/pages']);
         }
         )
     }

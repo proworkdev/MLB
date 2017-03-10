@@ -6,7 +6,8 @@ import { HttpModule } from '@angular/http';
 import { RouterModule , Routes} from '@angular/router';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {DataTableModule,SharedModule ,DialogModule} from 'primeng/primeng';
-
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 //Routes
 import { AppRoutes } from './routes/app.routes';
 
@@ -19,7 +20,9 @@ import { MlbComponent } from './components/admin/mlb/mlb.component';
 import { MlbPlayerComponent } from './components/admin/mlb/mlb.component';
 import { MembersComponent } from './components/admin/members/members.component';
 import { AddMemberComponent } from './components/admin/members/members.component';
-
+import { CmsComponent } from './components/admin/cms/cms.component';
+import { AddCmsComponent } from './components/admin/cms/cms.component';
+import { EditCmsComponent } from './components/admin/cms/cms.component';
 //Services
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
@@ -47,7 +50,10 @@ import { FrontComponent } from './components/front/front.component';
   MlbPlayerComponent,
   FrontComponent,
   MembersComponent,
-  AddMemberComponent
+  AddMemberComponent,
+  CmsComponent,
+  AddCmsComponent,
+  EditCmsComponent
   ],
   imports: [
   BrowserModule,
@@ -57,7 +63,9 @@ import { FrontComponent } from './components/front/front.component';
   SimpleNotificationsModule.forRoot(),
   DataTableModule,
   SharedModule,
-  DialogModule
+  DialogModule,
+  ModalModule.forRoot(),
+  BootstrapModalModule
   ],
   providers: [AuthService,AuthGuard],
   bootstrap: [TestComponent]

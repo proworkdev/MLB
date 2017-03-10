@@ -24,6 +24,11 @@
 					<li [routerLinkActive]="['active']" [routerLink]="['/admin/addmember']"><a>Add Member</a></li>
 				</ul>
 			</li>
+			<li [routerLinkActive]="['active']" class="droplink"><a [routerLink]="['/admin/pages']" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>CMS Pages</p><span class="arrow"></span></a>
+				<ul class="sub-menu">
+					<li [routerLinkActive]="['active']" [routerLink]="['/admin/addpage']"><a>Add Page</a></li>
+				</ul>
+			</li>
 		</ul>
 	</div><!-- Page Sidebar Inner -->
 	</div><!-- Page Sidebar -->

@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/user');
 var Teams = require('../models/teams');
 var Players = require('../models/players');
+var Pages = require('../models/pages');
 var jwt         = require('jwt-simple');
 var config = require('../config/database.js');
 var passport = require('passport');
@@ -171,35 +172,118 @@ router.post('/deleteMember', passport.authenticate('jwt', { session: false}), fu
 });
 
 router.post('/editMember', passport.authenticate('jwt', { session: false}), function(req, res) {
-  res.send('a');
-/*  var token = getToken(req.headers);
-  if (token) {
+  var token = getToken(req.headers);
+  if(token){
     var checkUser = checkAuthenticate(token);
     if(checkUser){
       return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
     }else{
-      res.send(req.body.id)
       User.findById(req.body.id, function (err, user) {  
         if (err) {
           res.status(500).send(err);
         } else 
-          user.first_name = req.body.first_name 
-          user.last_name = req.body.last_name
-          user.email = req.body.email
-          user.save(function (err, user) {
-            if (err) {
-              res.status(500).send(err)
-            }
-            res.send(user);
-          });
-        }
+        user.local.first_name = req.body.first_name 
+        user.local.last_name = req.body.last_name
+        user.local.email = req.body.email
+        user.save(function (err, user) {
+          if (err) {
+            res.status(500).send(err)
+          }
+          res.send(user);
+        });
       });
     }
-    
-  } else {
-    return res.status(403).send({success: false, msg: 'No token provided.'});
-  }*/
+  }else{
+   return res.status(403).send({success: false, msg: 'No token provided.'});
+ }
 });
+
+
+router.post('/addPage', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if(token){
+    var checkUser = checkAuthenticate(token);
+    if(checkUser){
+      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+    }else{
+      if(req.body.id){
+       Pages.findById(req.body.id, function (err, page) {  
+        if (err) {
+          res.status(500).send(err);
+        } else 
+        page.title = req.body.title 
+        page.slug = req.body.slug
+        page.content = req.body.content
+        page.save(function (err, page) {
+          if (err) {
+            res.status(500).send(err)
+          }
+          res.send(page);
+        });
+      });
+     }else{
+      var page = new Pages();
+      page.title = req.body.title
+      page.slug = req.body.slug
+      page.content = req.body.content
+      page.save(function (err, page) {
+        if (err) {
+          res.status(500).send(err)
+        }
+        res.send(page);
+      });
+    }
+
+
+  }
+}else{
+ return res.status(403).send({success: false, msg: 'No token provided.'});
+}
+});
+
+router.get('/getPages', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if(token){
+    var checkUser = checkAuthenticate(token);
+    if(checkUser){
+      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+    }else{
+      Pages.find({},function (err, pages) {
+        res.send(pages);
+      });
+
+    }
+  }else{
+   return res.status(403).send({success: false, msg: 'No token provided.'});
+ }
+});
+
+router.get('/getPage/:id', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if(token){
+    var checkUser = checkAuthenticate(token);
+    if(checkUser){
+      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+    }else{
+     Pages.findOne({
+      '_id': req.params.id
+    }, function(err, page) {
+      if (err) throw err;
+
+      if (page) {
+        res.send(page);
+      } else {
+       res.send({msg:'No Page found'})
+     }
+   });
+
+   }
+ }else{
+   return res.status(403).send({success: false, msg: 'No token provided.'});
+ }
+});
+
+
 
 getToken = function (headers) {
   if (headers && headers.authorization) {

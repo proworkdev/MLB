@@ -7,7 +7,7 @@ $( document ).ready(function() {
     });
     
     
-    var flot2 = function () {
+   /* var flot2 = function () {
 
 		// We use an inline data source in the example, usually data would
 		// be fetched from a server
@@ -179,7 +179,7 @@ $( document ).ready(function() {
         
     };
     
-    flot1();
+    flot1();*/
     
     $(".live-tile").liveTile();
     

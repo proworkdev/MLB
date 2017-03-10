@@ -15,7 +15,7 @@ interface Member {
 @Component({
 	selector: 'app-members',
 	templateUrl: './members.component.html',
-	styleUrls: ['../../../../../node_modules/primeng/resources/themes/omega/theme.css','../../../../../node_modules/primeng/resources/primeng.min.css','../../../../../node_modules/primeng/components/datatable/datatable.css']
+	styleUrls: ['../../../../../node_modules/primeng/resources/primeng.min.css','../../../../../node_modules/primeng/components/datatable/datatable.css']
 })
 export class MembersComponent implements OnInit {
 
@@ -73,7 +73,19 @@ export class MembersComponent implements OnInit {
 
 	edit(member){
 		this.memberService.editMember(member).subscribe(
-			success => console.log('success'),
+			success => {this.displayDialog = false
+				this.notificationService.success(
+					'Success',
+					'Edit User Successfully',
+					{
+						timeOut: 5000,
+						showProgressBar: true,
+						pauseOnHover: false,
+						clickToClose: false
+					}
+					)
+			}
+			,
 			error => console.log(error)
 			)	
 	}

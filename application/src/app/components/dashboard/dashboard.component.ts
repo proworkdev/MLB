@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {LeftSidebar} from '../../layouts/admin/left-sidebar/left-sidebar.component';
+declare var jQuery: any;
 
 @Component({
 	selector: 'app-dashboard',
@@ -11,6 +12,8 @@ export class DashboardComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
+		jQuery(".live-tile").liveTile();
+		jQuery('.counter').counterUp({delay: 10,time: 1000});
 	}
 
 }
