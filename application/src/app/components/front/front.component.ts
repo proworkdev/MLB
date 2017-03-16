@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-front',
-  templateUrl: './front.component.html',
-  styleUrls: ['./front.component.css']
+	moduleId: module.id,
+	selector: 'app-front',
+	templateUrl: './front.component.html',
+	styleUrls: ['./front.component.css']
 })
 export class FrontComponent implements OnInit {
 
-  constructor() { }
+	name = "s"
+	constructor() { }
 
-  ngOnInit() {
-  }
+	ngOnInit() {
+	}
 
 }

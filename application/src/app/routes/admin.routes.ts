@@ -9,6 +9,7 @@ import { AddMemberComponent } from '../components/admin/members/members.componen
 import { AddCmsComponent } from '../components/admin/cms/cms.component';
 import { EditCmsComponent } from '../components/admin/cms/cms.component';
 import { CmsComponent } from '../components/admin/cms/cms.component';
+import { ContestsComponent } from '../components/contests/contests.component';
 
 export const AdminRoutes = [
 { path: '', component: LoginComponent,data:{title:"Admin Login"} },
@@ -20,5 +21,6 @@ export const AdminRoutes = [
 { path: 'addpage', component: AddCmsComponent,canActivate: [AuthGuard],data:{title:"Add Page"}},
 { path: 'editpage/:id', component: EditCmsComponent,canActivate: [AuthGuard],data:{title:"Edit Page"}},
 { path: 'pages', component: CmsComponent,canActivate: [AuthGuard],data:{title:"Pages"}},
+{ path: 'contests', component: ContestsComponent,canActivate: [AuthGuard],data:{title:"Contests"}},
 { path: 'logout', component: LogoutComponent }
 ];

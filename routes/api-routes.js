@@ -51,6 +51,8 @@ router.post('/authenticate', function(req, res) {
         if (isMatch && !err) {
           // if user is found and password is right create a token
           var token = jwt.encode(user, config.secret);
+          req.session.token = token;
+          req.session.user = user;
           // return the information including token as JSON
           res.json({success: true, token: 'JWT '+token,user:user});
         } else {
@@ -281,6 +283,30 @@ router.get('/getPage/:id', passport.authenticate('jwt', { session: false}), func
  }else{
    return res.status(403).send({success: false, msg: 'No token provided.'});
  }
+});
+
+
+router.post('/deletePage', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var checkUser = checkAuthenticate(token);
+    if(checkUser){
+      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+    }else{
+      res.send(req.body.id);
+      Pages.findByIdAndRemove(req.body.id, function (err, page) {  
+        var response = {
+          success : true,
+          message: "Page successfully deleted",
+          id: page._id
+        };
+        res.send(response);
+      });
+    }
+    
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
 });
 
 

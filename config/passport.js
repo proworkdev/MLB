@@ -59,11 +59,10 @@ module.exports = function(passport) {
 
                 // set the user's local credentials
                 newUser.local.email    = email;
-                newUser.local.password = newUser.generateHash(password);
+                newUser.local.password = password;
                 newUser.local.first_name = req.body.first_name;
                 newUser.local.last_name = req.body.last_name;
-                newUser.local.role = 'admin';
-
+                newUser.local.role = 'user';
                 // save the user
                 newUser.save(function(err) {
                     if (err)
@@ -89,6 +88,7 @@ module.exports = function(passport) {
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
+
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);
@@ -102,6 +102,7 @@ module.exports = function(passport) {
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
             // all is well, return successful user
+            console.log(user);
             return done(null, user);
         });
 

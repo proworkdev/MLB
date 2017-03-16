@@ -98,6 +98,10 @@ export class AuthService {
         )
     }
 
+    userLoggedIn() {
+      return  localStorage.getItem('user');      
+    }
+
 
     getMlbTeams(){
       return this.http.get('http://localhost:8080/api/mlbTeams',{headers:new Headers({'Authorization':localStorage.getItem('token')})}).map(
@@ -191,6 +195,22 @@ export class AuthService {
       return this.http.post(this.url+'addPage',EditPage,{headers:new Headers({'Authorization':localStorage.getItem('token')})}).map(
         (response : Response)=>{
           this.router.navigate(['/admin/pages']);
+        }
+        )
+    }
+
+    deletePage(id){
+      return this.http.post(this.url+'deletePage',{id:id},{headers:new Headers({'Authorization':localStorage.getItem('token')})}).map(
+        (response : Response) =>{
+          console.log(response);
+        }
+        )
+    }
+
+    getcontests(){
+      return this.http.get('http://ec2-54-67-109-99.us-west-1.compute.amazonaws.com:3000/contests').map(
+        (response : Response)=>{
+          return response.json();
         }
         )
     }

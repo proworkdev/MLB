@@ -13,5 +13,4 @@ export class MlbService {
 		/*return this.http.get('http://localhost:8080/memberinfo',{headers:new Headers({'Authorization':'XMLHttpRequest'})}).map(
 		(response : Response) => console.log(response));*/
 	}
-
 }

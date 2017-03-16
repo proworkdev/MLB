@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef  } from '@angular/core';
+declare var jQuery: any;
 
 @Component({
 	moduleId: module.id,
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeftSidebar implements OnInit {
 
-	constructor() { }
+	constructor(private element : ElementRef) { 
+
+	}
 
 	ngOnInit() {
+		jQuery('.sidebar .accordion-menu li .sub-menu').slideUp(0);
+		//jQuery(".accordion-menu .droplink > a").click(() => this.collapseMenu());
+		jQuery(this.element.nativeElement).find('.accordion-menu .droplink > a').on('click', (e) => {
+			console.log(e)
+			jQuery(e).addClass('hello')
+		});
+	}
+
+	collapseMenu(){
+		//console.log(jQuery(this).addClass('hello'));
+		jQuery(this).addClass('hello')
+		
 	}
 
 }

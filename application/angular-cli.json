@@ -41,7 +41,7 @@
         "assets/plugins/flot/jquery.flot.tooltip.min.js",
         "assets/plugins/curvedlines/curvedLines.js",
         "assets/plugins/metrojs/MetroJs.min.js",
-        "assets/js/modern.min.js",
+        "assets/js/modern.js",
         "assets/plugins/summernote-master/summernote.min.js"
       ],
       "environments": {

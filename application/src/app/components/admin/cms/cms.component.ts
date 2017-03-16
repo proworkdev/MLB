@@ -16,7 +16,7 @@ declare var jQuery: any;
 export class CmsComponent implements OnInit {
 	model;
 	private pages: Object;
-	constructor(private cmsService : AuthService) {
+	constructor(private cmsService : AuthService,private _notification : NotificationsService) {
 
 		this.cmsService.getPages().subscribe(
 			pages => {
@@ -27,6 +27,30 @@ export class CmsComponent implements OnInit {
 
 	ngOnInit() {
 		this.model = new Pages('','','');
+	}
+
+	delete(pageid){
+		console.log(pageid);
+		var r = confirm("You Want to delete this page!!");
+		if (r == true) {
+			this.cmsService.deletePage(pageid).subscribe(
+				success => {
+					jQuery('#page-'+pageid).remove();
+					this._notification.success(
+						'Success',
+						'Page Deleted Successfully',
+						{
+							timeOut: 5000,
+							showProgressBar: true,
+							pauseOnHover: false,
+							clickToClose: false
+						}
+						)
+				},
+				error   =>console.log(error)
+				)
+		}
+		
 	}
 
 }

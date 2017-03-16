@@ -19,16 +19,17 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let page of pages">
+								<tr id="page-{{page._id}}" *ngFor="let page of pages">
 									<td>{{page.title}}</td>
 									<td>{{page.slug}}</td>
-									<td><a [routerLink]="['/admin/editpage',page._id]">Edit</a></td>
-								</tr>
-							</tbody>
-						</table>
+									<td><a [routerLink]="['/admin/editpage',page._id]">Edit</a>
+										<a (click)="delete(page._id)">Delete</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div><!-- Row -->
-	</div><!-- Main Wrapper -->
+			</div><!-- Row -->
+		</div><!-- Main Wrapper -->
 </div><!-- Page Inner -->
